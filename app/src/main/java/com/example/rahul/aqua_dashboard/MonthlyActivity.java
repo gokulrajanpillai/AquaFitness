@@ -1,5 +1,7 @@
 package com.example.rahul.aqua_dashboard;
 
+import android.app.DatePickerDialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -7,6 +9,10 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.CombinedChart;
@@ -24,22 +30,91 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class MonthlyActivity extends AppCompatActivity {
+
+    enum DatePickerType {
+        StartDatePickerType,
+        EndDatePickerType
+    }
+
+    private DatePickerType selectedDatePicker = DatePickerType.StartDatePickerType;
+    private Calendar calendar;
+    private EditText startDate;
+    private EditText endDate;
+    private Button updateReport;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_monthly);
-
-        CreateMonthlyReport();
+        configureDateInterface();
+        createMonthlyReport();
     }
 
+    private void configureDateInterface() {
 
-    public void CreateMonthlyReport(){
+        calendar        = Calendar.getInstance();
+        startDate       = findViewById(R.id.startDate);
+        endDate         = findViewById(R.id.endDate);
+        updateReport    = findViewById(R.id.updateReport);
+
+        DatePickerDialog.OnDateSetListener date = (view, year, monthOfYear, dayOfMonth) -> {
+            // TODO Auto-generated method stub
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, monthOfYear);
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateDateLabels();
+        };
+
+        startDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                selectedDatePicker = DatePickerType.StartDatePickerType;
+                new DatePickerDialog(MonthlyActivity.this, date, calendar
+                        .get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+        endDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                selectedDatePicker = DatePickerType.EndDatePickerType;
+                new DatePickerDialog(MonthlyActivity.this, date, calendar
+                        .get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+        updateReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+    }
+
+    private void updateDateLabels() {
+        String myFormat = "MM/dd/yy"; //In which you need put here
+        SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
+        if (selectedDatePicker == DatePickerType.StartDatePickerType) {
+            startDate.setText(dateFormat.format(calendar.getTime()));
+        }
+        else {
+            endDate.setText(dateFormat.format(calendar.getTime()));
+        }
+    }
+
+    public void createMonthlyReport(){
 
         Log.i("OAM","Entered CreateMonthlyReport");
         CombinedChart _cc= findViewById(R.id.ccMonthly);
