@@ -1,5 +1,6 @@
 package com.example.rahul.aqua_dashboard;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -18,6 +19,7 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
@@ -27,8 +29,11 @@ import java.util.stream.Collectors;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    Data _dataObj;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        _dataObj = new Data();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -45,52 +50,10 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-
-        PieChartComparison();
     }
 
 
-    //Overall glimpse
-    private void PieChartComparison(){
 
-
-
-        //data format
-        List<SingleSeries> _test=new ArrayList<>();
-        _test.add(new SingleSeries("Aqua",498));
-        _test.add(new SingleSeries("Dry",112));
-
-
-      List<PieEntry> _pieEntries= _test.stream().map(f-> new PieEntry(f.get_data(),f.get_label())).collect(Collectors.toList());
-
-        //format chart
-        PieDataSet pds=new PieDataSet(_pieEntries,"Quick comparison between 2 classes");
-        pds.setColors(ColorTemplate.PASTEL_COLORS);
-
-        pds.setValueTextSize(30f);
-        pds.setValueTextColor(Color.LTGRAY);
-
-        pds.setSliceSpace(5f);  //Gap between pieces
-        pds.setSelectionShift(10f);
-        PieData data=new PieData(pds);
-
-
-        PieChart _pc= (PieChart)findViewById(R.id.pcCompare);
-        _pc.setUsePercentValues(true);
-       // _pc.setDragDecelerationFrictionCoef(0.95f);
-        _pc.setDrawHoleEnabled(false);
-        _pc.setRotationEnabled(false);
-        //_pc.setHoleRadius(0.3f);
-        _pc.getDescription().setEnabled(true);
-
-        _pc.setUsePercentValues(true);
-        _pc.setMaxAngle(180);
-        _pc.setRotationAngle(180f);
-        _pc.setData(data);
-        _pc.animateY(1000); //animate chart on displaying
-        _pc.invalidate();
-
-    }
 
     @Override
     public void onBackPressed() {
@@ -128,25 +91,28 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        Intent _intent;
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
+        if (id == R.id.nav_home) {
+            // Home
+            _intent=new Intent(MainActivity.this,MainActivity.class);
+            startActivity(_intent);
+        }
+        else if (id == R.id.nav_dashboard) {
+            _intent=new Intent(MainActivity.this,HomeActivity.class);
+            startActivity(_intent);
+        }
+        else if (id == R.id.nav_comparison) {
 
         }
-//        else if (id == R.id.nav_send) {
-//
-//        }
+        else if (id == R.id.nav_average) {
+
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+
     }
 }

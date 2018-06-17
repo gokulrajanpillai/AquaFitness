@@ -4,4 +4,12 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorDarkGray">#585454</color>
+    <color name="lightgray">#ededed</color>
+    <color name="deeppurple">#7C4DFF</color>
+    <color name="yello">#ffb300</color>
+    <color name="green">#00bfa5</color>
+    <color name="backgroundcolor">#fcfcfc</color>
+    <color name="red">#960718</color>
+    <color name="black">#000</color>
+    <color name="white">#fff</color>
 </resources>
