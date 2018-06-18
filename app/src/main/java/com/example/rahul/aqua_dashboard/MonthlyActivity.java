@@ -39,79 +39,12 @@ import java.util.stream.Collectors;
 
 public class MonthlyActivity extends AppCompatActivity {
 
-    enum DatePickerType {
-        StartDatePickerType,
-        EndDatePickerType
-    }
-
-    private DatePickerType selectedDatePicker = DatePickerType.StartDatePickerType;
-    private Calendar calendar;
-    private EditText startDate;
-    private EditText endDate;
-    private Button updateReport;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_monthly);
-        configureDateInterface();
         createMonthlyReport();
-    }
-
-    private void configureDateInterface() {
-
-        calendar        = Calendar.getInstance();
-        startDate       = findViewById(R.id.startDate);
-        endDate         = findViewById(R.id.endDate);
-        updateReport    = findViewById(R.id.updateReport);
-
-        DatePickerDialog.OnDateSetListener date = (view, year, monthOfYear, dayOfMonth) -> {
-            // TODO Auto-generated method stub
-            calendar.set(Calendar.YEAR, year);
-            calendar.set(Calendar.MONTH, monthOfYear);
-            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            updateDateLabels();
-        };
-
-        startDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                selectedDatePicker = DatePickerType.StartDatePickerType;
-                new DatePickerDialog(MonthlyActivity.this, date, calendar
-                        .get(Calendar.YEAR), calendar.get(Calendar.MONTH),
-                        calendar.get(Calendar.DAY_OF_MONTH)).show();
-            }
-        });
-
-        endDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                selectedDatePicker = DatePickerType.EndDatePickerType;
-                new DatePickerDialog(MonthlyActivity.this, date, calendar
-                        .get(Calendar.YEAR), calendar.get(Calendar.MONTH),
-                        calendar.get(Calendar.DAY_OF_MONTH)).show();
-            }
-        });
-
-        updateReport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-    }
-
-    private void updateDateLabels() {
-        String myFormat = "MM/dd/yy"; //In which you need put here
-        SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
-        if (selectedDatePicker == DatePickerType.StartDatePickerType) {
-            startDate.setText(dateFormat.format(calendar.getTime()));
-        }
-        else {
-            endDate.setText(dateFormat.format(calendar.getTime()));
-        }
     }
 
     public void createMonthlyReport(){
@@ -148,8 +81,8 @@ public class MonthlyActivity extends AppCompatActivity {
 
         //Bardata properties
         BarData bd=new BarData(GenerateBarDataSet(_first,true),GenerateBarDataSet(_second,false));
-        bd.groupBars(0,0.3f,0f);
-        bd.setBarWidth(1f);
+        bd.groupBars(0,0.0f,0f);
+        bd.setBarWidth(0.5f);
 
         CombinedData data = new CombinedData();
 
@@ -172,6 +105,7 @@ public class MonthlyActivity extends AppCompatActivity {
        // xAxis.setLabelCount(xVals.size());
         //xAxis.setValueFormatter(new IndexAxisValueFormatter(xVals));
         xAxis.setTextColor(Color.LTGRAY);
+        xAxis.mLabelWidth = 10;
 
         xAxis.setCenterAxisLabels(false);
 //        xAxis.setSpaceMax(0.5f * (bd.getGroupWidth(0.3f,0f)) );
@@ -250,6 +184,7 @@ public class MonthlyActivity extends AppCompatActivity {
         set.setColor(isDry? Color.RED:Color.parseColor("#800000"));
         set.setValueTextColor(Color.LTGRAY);
         set.setValueTextSize(10f);
+        set.setBarBorderWidth(1.0f);
         set.setHighLightColor(isDry? Color.RED:Color.parseColor("#800000"));
 
         return set;

@@ -8,9 +8,43 @@
 
     <com.github.mikephil.charting.charts.BarChart android:id="@+id/bcDry"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" android:orientation="horizontal">
-
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toTopOf="@id/dateSection"
+        android:orientation="horizontal">
 
     </com.github.mikephil.charting.charts.BarChart>
-
+    <LinearLayout
+        android:id="@+id/dateSection"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:weightSum="3">
+        <EditText
+            android:id="@+id/startDate"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:hint="Start Date"
+            android:focusable="false"
+            android:textColor="@color/colorDarkGray"
+            android:text="Set start date"/>
+        <EditText
+            android:id="@+id/endDate"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:hint="End Date"
+            android:focusable="false"
+            android:textColor="@color/colorDarkGray"
+            android:text="Set end date"/>
+        <Button
+            android:id="@+id/updateReport"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:textColor="@color/colorDarkGray"
+            android:text="Update"/>
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>
